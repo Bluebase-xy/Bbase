@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlueBase Public Airdrops</title>
+<title>BlueBase Airdrop Checker</title>
 <style>
 body { font-family: Arial; background: #f8f8f8; padding: 20px; }
 h1 { color: #1a73e8; text-align: center; }
 .airdrop { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.airdrop a { color: #1a73e8; text-decoration: none; font-weight: bold; }
 .status-Live { color: green; font-weight: bold; }
 .status-Upcoming { color: orange; font-weight: bold; }
 .status-Expired { color: red; font-weight: bold; }
@@ -16,14 +15,15 @@ h1 { color: #1a73e8; text-align: center; }
 </head>
 <body>
 
-<h1>BlueBase Public Airdrops</h1>
+<h1>BlueBase Public Airdrop Checker</h1>
 <div id="airdrops"></div>
 
 <script>
-// Public airdrops (anyone is eligible)
+// List of public airdrops (anyone is eligible)
 const airdrops = [
-  { name: "BlueToken Public Airdrop", status: "Upcoming", link: "#" },
-  { name: "Base NFT Airdrop", status: "Upcoming", link: "#" }
+  { name: "BlueToken Public Airdrop", status: "Upcoming" },
+  { name: "Base NFT Airdrop", status: "Upcoming" },
+  { name: "Old Token Airdrop", status: "Expired" }
 ];
 
 const container = document.getElementById('airdrops');
@@ -34,4 +34,10 @@ airdrops.forEach(drop => {
   div.innerHTML = `
     <div><strong>${drop.name}</strong></div>
     <div>Status: <span class="status-${drop.status}">${drop.status}</span></div>
-    <div>${drop.status === 'Live' ? `<a href="${drop.link}" target="_blank">
+  `;
+  container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
