@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlueBase Airdrops</title>
-<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+<title>BlueBase Public Airdrops</title>
 <style>
 body { font-family: Arial; background: #f8f8f8; padding: 20px; }
 h1 { color: #1a73e8; text-align: center; }
-button { padding: 10px 20px; margin: 10px 0; font-size: 16px; cursor: pointer; }
 .airdrop { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.airdrop button { color: #1a73e8; text-decoration: none; font-weight: bold; }
+.airdrop a { color: #1a73e8; text-decoration: none; font-weight: bold; }
 .status-Live { color: green; font-weight: bold; }
 .status-Upcoming { color: orange; font-weight: bold; }
 .status-Expired { color: red; font-weight: bold; }
@@ -18,85 +16,22 @@ button { padding: 10px 20px; margin: 10px 0; font-size: 16px; cursor: pointer; }
 </head>
 <body>
 
-<h1>BlueBase Airdrops</h1>
-<button id="connectWallet">Connect Wallet</button>
-<p id="walletAddress"></p>
-
+<h1>BlueBase Public Airdrops</h1>
 <div id="airdrops"></div>
 
 <script>
-let provider;
-let signer;
-let userAddress;
-
-// Connect Wallet
-document.getElementById('connectWallet').onclick = async () => {
-  if (window.ethereum) {
-    provider = new ethers.BrowserProvider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = await provider.getSigner();
-    userAddress = await signer.getAddress();
-    document.getElementById('walletAddress').innerText = "Connected: " + userAddress;
-    loadAirdrops();
-  } else {
-    alert("Please install a Base/MetaMask wallet.");
-  }
-};
-
-// BlueBase Airdrops Data (replace contractAddress & ABI with your real data)
+// Public airdrops (anyone is eligible)
 const airdrops = [
-  {
-    name: "BlueToken Public Airdrop",
-    status: "Live",
-    contractAddress: "0xYourAirdropContractAddress",
-    abi: [{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-  },
-  {
-    name: "Base NFT Airdrop",
-    status: "Upcoming",
-    contractAddress: "0xYourOtherContractAddress",
-    abi: [{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-  }
+  { name: "BlueToken Public Airdrop", status: "Upcoming", link: "#" },
+  { name: "Base NFT Airdrop", status: "Upcoming", link: "#" }
 ];
 
-// Load airdrops
-function loadAirdrops() {
-  const container = document.getElementById('airdrops');
-  container.innerHTML = '';
+const container = document.getElementById('airdrops');
 
-  airdrops.forEach(drop => {
-    const div = document.createElement('div');
-    div.className = 'airdrop';
-
-    let buttonHtml = '';
-    if (drop.status === 'Live') {
-      buttonHtml = `<button onclick='claimAirdrop("${drop.contractAddress}", ${JSON.stringify(drop.abi)})'>Claim Now</button>`;
-    } else {
-      buttonHtml = `<span class="status-${drop.status}">${drop.status}</span>`;
-    }
-
-    div.innerHTML = `<div><strong>${drop.name}</strong></div>
-                     <div>Status: <span class="status-${drop.status}">${drop.status}</span></div>
-                     <div>${buttonHtml}</div>`;
-    container.appendChild(div);
-  });
-}
-
-// Claim function
-async function claimAirdrop(contractAddress, abi) {
-  if (!signer) return alert("Connect your wallet first!");
-  const contract = new ethers.Contract(contractAddress, abi, signer);
-
-  try {
-    const tx = await contract.claim();
-    await tx.wait();
-    alert("Airdrop claimed successfully!");
-  } catch (err) {
-    console.error(err);
-    alert("Claim failed. Check console for details.");
-  }
-}
-</script>
-
-</body>
-</html>
+airdrops.forEach(drop => {
+  const div = document.createElement('div');
+  div.className = 'airdrop';
+  div.innerHTML = `
+    <div><strong>${drop.name}</strong></div>
+    <div>Status: <span class="status-${drop.status}">${drop.status}</span></div>
+    <div>${drop.status === 'Live' ? `<a href="${drop.link}" target="_blank">
